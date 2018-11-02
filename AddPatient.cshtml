@@ -1,0 +1,31 @@
+﻿@{     
+       var PatientPID="";     
+       var PatientFName="";     
+       var PatientMI="";     
+       var PatientLName="";  
+       var PatientSuffix="";    
+       var PatientGender="";   
+       if(IsPost){         
+           PatientPID=Request["formPID"]; 
+           PatientFName=Request["formFName"];        
+           PatientMI=Request["formMI"];         
+           PatientLName=Request["formLName"];  
+           PatientSuffix=Request["formSuffix"];     
+           PatientGender=Request["formGender"];   
+           var SQLINSERT = "INSERT INTO Patient (M0020_PAT_ID, M0040_PAT_FName, M0040_PAT_MI, M0040_PAT_LNAME, M0040_PAT_SUFFIX, M0069_PAT_GENDER) VALUES (@0, @1, @2, @3, @4, @5)";         
+           var db = Database.Open("Grace");        
+           db.Execute(SQLINSERT, PatientPID, PatientFName, PatientMI, PatientLName, PatientSuffix, PatientGender); 
+           Response.Redirect("ListPatients.cshtml");      
+           }     
+}
+
+<h1>Add a New Patient to the Database</h1>       
+<form action="" method="post">         
+    <p>Patient ID:<input type="text" name="formPID" /></p> 
+    <p>First Name:<input type="text" name="formFName" /></p>         
+    <p>Middle Initial:<input type="text" name="formMI" /></p>         
+    <p>Last Name:<input type="text" name="formLName" /></p>  
+    <p>Suffix:<input type="text" name="formSuffix" /></p>     
+     <p>Gender:<input type="text" name="formGender" /></p>  
+     <p><input type="submit" value="Add Patient" /></p>     
+</form>

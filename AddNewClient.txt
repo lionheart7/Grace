@@ -1,0 +1,457 @@
+<?php
+session_start();
+?>
+<!DOCTYPE HTML> 
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<style>
+.error {color: #FF0000;}
+</style>
+
+
+
+
+</head>
+
+<body> 
+<?php
+// to change a session variable, just overwrite it 
+$_SESSION[ClientID] = $_SESSION[ClientID] + 1;
+?>
+
+
+
+<?php
+// define variables and set to empty values
+$FirstNameErr = $LastNameErr = $MIErr = $SuffixErr = $genderErr = $DOBErr = $Street1Err = $Street2Err ="";
+$FirstName = $LastName = $MI = $Suffix = $gender = $DOB = $age = $Street1 = $Street2 = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+   $LastName = test_input($_POST["LastName"]);
+   if (empty($_POST["LastName"]) || $_POST["LastName"]==" ") {
+     $LastNameErr = "Last Name is required";
+   } else {
+     $LastName = test_input($_POST["LastName"]);
+     
+     // check if name only contains letters and whitespace
+     if (!preg_match("/^[a-zA-Z- ]*$/",$LastName)) {
+       $LastNameErr = "Only letters and white space allowed"; 
+     }
+
+   }
+   $FirstName = test_input($_POST["FirstName"]);
+   if (empty($_POST["FirstName"]) || $_POST["FirstName"]==" ") {
+     $FirstNameErr = "First Name is required";
+   } else {
+     $FirstName = test_input($_POST["FirstName"]);
+
+     // check if name only contains letters and whitespace
+     if (!preg_match("/^[a-zA-Z- ]*$/",$FirstName)) {
+       $FirstNameErr = "Only letters and white space allowed"; 
+     }
+
+   }
+   $MI = test_input($_POST["MI"]);
+   if (empty($_POST["MI"]) || $_POST["MI"]==" ") {
+     $MIErr = "";
+     $MI = test_input($_POST["MI"]);
+   } else {
+     $MI = test_input($_POST["MI"]);
+
+     // check if name only contains letters
+     if (!preg_match("/^[a-zA-Z]*$/",$MI)) {
+       $FirstNameErr = "Only letters allowed"; 
+     }
+   }
+  
+   if (empty($_POST["Suffix"])) {
+     $Suffix = "";
+     $Suffix = test_input($_POST["Suffix"]);
+   } else {
+     $Suffix = test_input($_POST["Suffix"]);
+
+     // check if name only contains letters and whitespace
+     if (!preg_match("/^[a-zA-Z ]*$/",$Suffix)) {
+       $SuffixNameErr = "Only letters and white space allowed"; 
+     }
+   }
+
+   
+   if (empty($_POST["gender"])) {
+     $genderErr = "Gender is required";
+   } else {
+     $gender = test_input($_POST["gender"]);
+   }
+   $DOB = test_input($_POST["DOB"]);
+   if (empty($_POST["DOB"])) {
+     $DOBErr = "Date of Birth is required";
+   } else {
+     $DOB = test_input($_POST["DOB"]);
+        // check if dob only contains numbers
+     if (!preg_match("/^[0-9\/]*$/",$DOB)) {
+       $DOBErr = "Only numbers are allowed"; 
+     }
+
+   }
+
+   $Street1 = test_input($_POST["Street1"]);
+   if (empty($_POST["Street1"])) {
+     $Street1Err = "";
+   } else {
+     $Street1 = test_input($_POST["Street1"]);
+
+     // check if name only contains letters and whitespace
+     if (!preg_match("/^[a-zA-Z0-9 ]*$/",$Street1)) {
+       $Street1Err = "Only letters and white space allowed"; 
+     }
+
+   }
+   $Street2 = test_input($_POST["Street2"]);
+   if (empty($_POST["Street2"])) {
+     $Street2 = "";
+   } else {
+     $Street2 = test_input($_POST["Street2"]);
+
+     // check if name only contains letters, numbers and whitespace
+     if (!preg_match("/^[a-zA-Z0-9 ]*$/",$Street2)) {
+       $Street2Err = "Only letters, numbers and white space allowed"; 
+     }
+
+   }
+   $City = test_input($_POST["City"]);
+   if (empty($_POST["City"])) {
+     $City = "";
+   } else {
+     $City = test_input($_POST["City"]);
+
+     // check if name only contains letters and whitespace
+     if (!preg_match("/^[a-zA-Z ]*$/",$City)) {
+       $CityErr = "Only letters and white space allowed"; 
+     }
+   }
+   $ZipCode = test_input($_POST["ZipCode"]);
+   if (empty($_POST["ZipCode"])) {
+     $ZipCode = "";
+   } else {
+     $ZipCode = test_input($_POST["ZipCode"]);
+
+     // check if name only contains letters and whitespace
+     if (!preg_match("/^[0-9- ]*$/",$ZipCode)) {
+       $ZipCodeErr = "Only letters and white space allowed"; 
+     }
+   }
+
+
+
+   if (empty($_POST["comment"])) {
+     $comment = "";
+   } else {
+     
+if ( strlen( $_POST[ 'comment'] ) >= 1 && strlen( $_POST[ 'comment' ] ) <= 256 ){
+
+$comment = htmlentities ( trim ( $_POST[ 'comment' ] ) , ENT_NOQUOTES );}
+$comment = test_input($_POST["comment"]);
+   }
+
+}
+
+function test_input($data) {
+   $data = trim($data);
+   $data = stripslashes($data);
+   $data = htmlspecialchars($data);
+   return $data;
+}
+?>
+
+<div class="container">
+<h2>Add New Client</h2>
+<p><span class="error">* required field.</span></p>
+<form name="personal" role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
+
+<div class="form-group">
+   <label for="LastName">Last Name:</label> 
+   <input type="text" class="form-control" id="LastName" onkeypress="return isAlphaKey(event)" onkeyup="myFunctiontoUpperCasex()" name="LastName" maxlength="30" placeholder="Last Name" required value="<?php echo $LastName;?>">
+
+
+   <span class="error">* <?php echo $LastNameErr;?></span>
+</div>    
+
+    <div class="form-group">
+      <label for="Suffix">Suffix:</label>
+      <select class="form-control" id="Suffix" name="Suffix">
+        <option></option>
+        <option>Sr</option>
+        <option>Jr</option>
+        <option>II</option>
+        <option>III</option>
+        <option>IV</option>
+        <option>V</option>
+        <option>VI</option>
+        <option>VII</option>
+        <option>VIII</option>
+      </select>
+    </div>
+
+   
+<div class="form-group">
+   <label for="FirstName">First Name:</label>
+   <input type="text" class="form-control" id="FirstName" onkeypress="return isletterKey(event)" onkeyup="myFunctiontoUpperCasey()" name="FirstName" maxlength="30" placeholder="First Name" required value="<?php echo $FirstName;?>">
+   <span class="error">* <?php echo $FirstNameErr;?></span>
+</div>
+   
+<div class="form-group">
+   <label for="MI">MI:</label>
+   <input type="text" class="form-control" id="MI" onkeypress="return isAlphaMIKey(event)" onkeyup="myFunctiontoUpperCasez()" name="MI" maxlength="1" placeholder="MI" required value="<?php echo $MI;?>">
+   <span class="error"><?php echo $MIErr;?></span>
+</div>
+
+<div class="form-group">
+   <label for="DOB">Date of Birth:</label>
+   <input type="date" class="form-control" id="DOB" "onclick=clientage()" onkeypress="return isDateKey(event)" onkeyup=myAgeValidation() onkeydown="return addSlashes(this)" name="DOB" maxlength="10" placeholder="mm/dd/yyyy" required value="<?php echo $DOB;?>">
+   <span class="error">*<?php echo $DOBErr;?></span>
+   
+   
+   <label id="age" for="age">Age: </label>
+   <input type="number" Class="form-control" id="edad" name="age">
+   <br>
+   
+   
+</div>
+
+<div>   
+<label for="gender">Gender:</label>
+   <input type="radio" name="gender" <?php if (isset($gender) && $gender=="female") echo "checked";?>  value="female">Female
+   <input type="radio" name="gender" <?php if (isset($gender) && $gender=="male") echo "checked";?>  value="male">Male
+   <span class="error">* <?php echo $genderErr;?></span>
+</div>
+
+
+<div class="form-group">
+   <label for="Address1">Street Address1:</label>
+   <input type="text" class="form-control" id="Street1" onkeypress="return isAlphaNumericKey(event)" name="Street1" placeholder="Street Address1" value="<?php echo $Address1;?>">
+   <span class="error"><?php echo $Address1Err;?></span>
+</div>
+
+<div class="form-group">
+   <label for="Address2">Street Address2:</label>
+   <input type="text" class="form-control" id="Street2" onkeypress="return isAlphaNumericKey(event)" name="Street2" placeholder="Street Address2" value="<?php echo $Address2;?>">
+   <span class="error"><?php echo $Address2Err;?></span>
+</div>
+
+<div class="form-group">
+   <label for="City">City:</label>
+   <input type="text" class="form-control" id="City" onkeypress="return isAlphaNumericKey(event)" name="City" placeholder="City" value="<?php echo $City;?>">
+   <span class="error"><?php echo $CityErr;?></span>
+</div>
+
+<div class="form-group">
+   <label for="ZipCode">Zip Code:</label>
+   <input type="text" class="form-control" id="ZipCode" onkeypress="return isNumberKey(event)" name="ZipCode" maxlength="10" placeholder="99999-9999" required value="<?php echo chop(chunk_split($ZipCode,5,"-"),"-");?>">
+   <span class="error">* <?php echo $ZipCodeErr;?></span>
+   <br>
+   
+   
+</div>
+
+   Comment: <textarea name="comment" rows="5" cols="40" maxlength=255><?php echo $comment;?></textarea>
+   <br><br>
+
+   <input type="submit" name="submit" value="Submit"> 
+</form>
+
+</div>
+
+<?php
+echo "<h2>Your Input:</h2>";
+echo $LastName;
+echo "<br>";
+echo $Suffix;
+echo "<br>";
+echo $FirstName;
+echo "<br>";
+echo $MI;
+echo "<br>";
+echo $DOB;
+echo "<br>";
+echo $age;
+echo "<br>";
+echo $comment;
+?>
+
+
+   <SCRIPT language=Javascript>
+
+  <!--
+      function isAlphaNumericKey(event)
+      {
+         
+         
+         var charCode = event.which || event.keyCode
+
+         if ( charCode > 32 && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122) && (charCode < 48 || charCode > 57))
+            return false;
+
+        
+     
+         return true;
+      }
+      //-->
+
+   </SCRIPT>
+
+
+   <SCRIPT language=Javascript>
+
+function myAgeValidation() {
+var inputDate = document.personal.DOB.value;
+ getAge(new Date(inputDate));
+
+} 
+
+function getAge(birth) {
+
+    var today = new Date();
+    var nowyear = today.getFullYear();
+    var nowmonth = today.getMonth();
+    var nowday = today.getDate();
+
+    var birthyear = birth.getFullYear();
+    var birthmonth = birth.getMonth();
+    var birthday = birth.getDate();
+ 
+    var age = nowyear - birthyear;
+    var age_month = nowmonth - birthmonth;
+    var age_day = nowday - birthday;
+
+
+    if(age_month < 0 || (age_month == 0 && age_day <0)) {
+            age = parseInt(age) -1;
+        }
+ 
+
+    //document.getElementById("age").innerHTML = "Age: " + age;
+    document.getElementById("edad").setAttribute("value", age);
+}
+
+  <!--
+      function isAlphaKey(event)
+      {
+         
+         
+         var charCode = event.which || event.keyCode
+
+         if ( charCode > 31 && charCode != 45 && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122) )
+            return false;
+
+        
+     
+         return true;
+      }
+      //-->
+
+   </SCRIPT>
+
+   <SCRIPT language=Javascript>
+      <!--
+      function isNumberKey(event)
+      {
+         var charCode = event.which || event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
+      //-->
+   </SCRIPT>
+
+   <SCRIPT language=Javascript>
+      <!--
+      function isDateKey(event)
+      {
+         var charCode = event.which || event.keyCode
+         if (charCode > 31 && charCode != 47 && (charCode < 48 || charCode > 57 ) )
+            return false;
+
+         return true;
+      }
+      //-->
+   </SCRIPT>
+
+   <SCRIPT language=Javascript>
+      <!--
+      function isletterKey(event)
+      {
+         var charCode = event.which || event.keyCode
+         if ( charCode > 32 && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122) )
+            return false;
+
+         return true;
+      }
+      //-->
+   </SCRIPT>
+
+<SCRIPT language=Javascript>
+      <!--
+      function isAlphaMIKey(event)
+      {
+         var charCode = event.which || event.keyCode
+         if ( charCode > 31 && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122) )
+            return false;
+
+         return true;
+      }
+      //-->
+   </SCRIPT>
+
+<script>
+function myFunctiontoUpperCasex() {
+    var x = document.getElementById("LastName");
+    x.value = x.value.toUpperCase();
+}
+</script>
+
+<script>
+function myFunctiontoUpperCasey() {
+    var y = document.getElementById("FirstName");
+    y.value = y.value.toUpperCase();
+}
+</script>
+
+<script>
+function myFunctiontoUpperCasez() {
+    var z = document.getElementById("MI");
+    z.value = z.value.toUpperCase();
+}
+</script>
+
+<script>
+i=0;
+$(document).ready(function(){
+  $("input").keypress(function(){
+    $("span").text(i+=1);
+  });
+});
+</script>
+
+<script type="text/javascript">
+function addSlashes(input) {
+    var v = input.value;
+    if (v.match(/^\d{2}$/) !== null) {
+        input.value = v + '/';
+    } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
+        input.value = v + '/';
+    }
+}
+</script>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>

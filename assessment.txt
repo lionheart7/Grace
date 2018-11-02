@@ -1,0 +1,12 @@
+Assessment_id
+client_id
+Activity_id
+client_name
+RFA
+Effective_date
+Completed_date
+Referred_date
+Lock_date
+Insurance
+Validation
+Status
