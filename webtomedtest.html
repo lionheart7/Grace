@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>WebToMed Website Developer Test</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="This is a simple CSS, HTML, and JS Test">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="w3.css">
+	<style>
+	/* Add all CSS enteries here */
+
+        #div_1 {
+            
+             display: inline-block;
+             width: 300px;
+             height: 50px;
+             background-color: red;
+             column-gap: 0px;
+        }
+        #div_2 {
+             
+             display: inline-block;
+             resize: horizontal;
+             overflow: auto;
+             width: calc(100% - 650px);
+             height: 50px;
+             background-color: green;
+             column-gap: 0px;
+             
+        }
+        #div_3 {
+             
+             display: inline-block;
+             width: 350px;
+             height: 50px;
+             background-color: blue;
+             column-gap: 0px;
+             font-weight: bold;
+             text-decoration: underline;
+             color: white;
+
+        }
+        #div_4 {
+             background-color: yellow;
+             width: auto;
+             height: 300px;
+
+        }
+        #div_5 {
+             
+             vertical-align: middle; 
+         
+        }
+
+        #div_6 {
+             
+             border: 3px solid black;
+             margin-top: 10px; 
+             padding: 20px;
+         
+        }
+
+/* Create three unequal columns that floats next to each other */
+.column {
+    float: left;
+
+}
+
+.left {
+  width: 300px;
+}
+
+
+.right {
+  width: 350px;
+}
+
+.middle {
+  width: calc(100% - 650px);
+}
+.center { 
+    text-align: center;
+    line-height: 300px;
+    
+    
+}
+.center p {
+ 
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+	</style>
+	
+	<script>
+	/* Add any JavaScript here */
+
+
+        function changedivcolor() {
+
+        var x = document.getElementById("DivSelect").value;
+        var y = document.getElementById("ColorSelect").value;
+        document.getElementById(x).style.borderStyle = "solid";
+        document.getElementById(x).style.borderWidth = "10px";
+        document.getElementById(x).style.borderColor = y;
+
+        }
+	</script>
+</head>
+<body>
+
+
+<!-- Modify this block of divs - START -->
+<div class="w3-row">
+	<div id="div_1" class="column left" style="text-align:left" class="w3-col m3">LEFT COL STATIC WIDTH 300px</div>
+
+	<div id="div_2" class="column middle" style="text-align:center"  class="w3-col m6">CENTER COL DYNAMIC WIDTH</div>
+	<div id="div_3" class="column right" style="text-align:right"  class="w3-col m3">RIGHT COL STATIC WIDTH 350px</div>
+</div>
+<div id="div_4" class="center">
+	<div id="div_5">
+	This text should be centered horizontally and vertically.
+        </div>
+	
+</div>
+<div id="div_6"> 
+	Div Selector:
+	<!-- Place Div Select Here -->
+
+  <select   id="DivSelect" >
+    <option value="div_1">Div 1</option>
+    <option value="div_2">Div 2</option>
+    <option value="div_3">Div 3</option>
+  </select>
+    
+  <br /><br />
+	Color Selector:
+	<!-- Place Color Select Here -->
+
+  <select   id="ColorSelect" >
+    <option value="#333333">Gray 1</option>
+    <option value="#777777">Gray 2</option>
+    <option value="#CCCCCC">Gray 3</option>
+  </select>
+
+	<!-- Place "Change Color" Button Here -->
+
+    <button type="button" onclick="changedivcolor()">Change Color</button>
+
+
+</div>
+<!-- Modify this block of divs - END -->
+
+
+<br />
+<hr />
+<div><strong>Your end result should look like this (do not modify anything below this line):</strong></div>
+<br />
+<img src="http://careers-test.webtomed.com/assets/images/test.gif" width="1024" height="484" />
+
+</body>
+</html>
+                      
